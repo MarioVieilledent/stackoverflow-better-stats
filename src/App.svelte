@@ -5,7 +5,7 @@
     {
       title: "Desired",
       desc: "From StackOverflow 2023's survey",
-      formula: "Raw data",
+      formula: "% of respondents who want to use it",
       indexInArray: 0,
     },
     {
@@ -29,7 +29,7 @@
     {
       title: "Admired",
       desc: "From StackOverflow 2023's survey",
-      formula: "Raw data",
+      formula: "% of respondents who want to continue using it",
       indexInArray: 1,
     },
     {
