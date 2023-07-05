@@ -1,29 +1,61 @@
 <script lang="ts">
   import { stats } from "./stats";
 
-  const TOP_DESIRED = 30.0;
-  const BOTTOM_DESIRED = 5.0;
+  let display = [
+    {
+      title: "Desired",
+      desc: "From StackOverflow 2023's survey",
+      formula: "Raw data",
+      indexInArray: 0,
+    },
+    {
+      title: "Average focus on desired",
+      desc: "First quartile",
+      formula: "(3*Desired + 1*Admired) / 4",
+      indexInArray: 2,
+    },
+    {
+      title: "Average",
+      desc: "Point in between Desired and Admired",
+      formula: "(Desired + Admired) / 2",
+      indexInArray: 3,
+    },
+    {
+      title: "Average focus on admired",
+      desc: "Third quartile",
+      formula: "(1*Desired + 3*Admired) / 4",
+      indexInArray: 4,
+    },
+    {
+      title: "Admired",
+      desc: "From StackOverflow 2023's survey",
+      formula: "Raw data",
+      indexInArray: 1,
+    },
+    {
+      title: "Underestimated",
+      desc: "From StackOverflow 2023's survey",
+      formula: "Admired - Desired",
+      indexInArray: 5,
+    },
+  ];
 
-  const TOP_ADMIRED = 65.0;
-  const BOTTOM_ADMIRED = 60.0;
+  // Adds averages focus on desired on index 2
+  for (const [lang, vals] of Object.entries(stats)) {
+    vals.push((vals[0] * 3 + vals[1]) / 4.0);
+  }
 
-  let TOP_AVG = 45.0;
-  let BOTTOM_AVG = 30.0;
-
-  const TOP_UNDERESTIMATED = 65.0;
-  const BOTTOM_UNDERESTIMATED = 50.0;
-
-  // Adds averages on index 2
+  // Adds averages  index 3
   for (const [lang, vals] of Object.entries(stats)) {
     vals.push((vals[0] + vals[1]) / 2.0);
   }
 
-  // Adds smallest span for high average on index 3
+  // Adds averages focus on admired  index 4
   for (const [lang, vals] of Object.entries(stats)) {
-    vals.push(vals[2] - ((vals[1] - vals[0]) / 2));
+    vals.push((vals[0] + vals[1] * 3) / 4.0);
   }
 
-  // Adds span on index 4
+  // Adds span on index 5
   for (const [lang, vals] of Object.entries(stats)) {
     vals.push(vals[1] - vals[0]);
   }
@@ -39,101 +71,27 @@
 
 <main>
   <div class="top">
-    <div class="list">
-      <h2>Desired</h2>
-      <span class="desc">From StackOverflow 2023's survey</span>
-      <span class="formula">Raw data</span>
-      {#each Object.entries(stats).sort((a, b) => b[1][0] - a[1][0]) as [lang, vals], index}
-        <div
-          class={"lang" +
-            (lang === currLang ? " selected" : "") +
-            " tier" +
-            Math.floor(index / 10.0 + 1.0)}
-          on:mouseenter={() => mouseEnter("Desired", lang)}
-          on:mouseleave={() => mouseEnter("", "")}
-        >
-          <span>{index + 1}&#41;</span>
-          <span>{lang}</span>
-          <span>{vals[0].toFixed(2)}&#37;</span>
-        </div>
-      {/each}
-    </div>
-    <div class="list">
-      <h2>Admired</h2>
-      <span class="desc">From StackOverflow 2023's survey</span>
-      <span class="formula">Raw data</span>
-      {#each Object.entries(stats).sort((a, b) => b[1][1] - a[1][1]) as [lang, vals], index}
-        <div
-          class={"lang" +
-            (lang === currLang ? " selected" : "") +
-            " tier" +
-            Math.floor(index / 10.0 + 1.0)}
-          on:mouseenter={() => mouseEnter("Admired", lang)}
-          on:mouseleave={() => mouseEnter("", "")}
-        >
-          <span>{index + 1}&#41;</span>
-          <span>{lang}</span>
-          <span>{vals[1].toFixed(2)}&#37;</span>
-        </div>
-      {/each}
-    </div>
-    <div class="list">
-      <h2>Average</h2>
-      <span class="desc">Middle point between desired and admired</span>
-      <span class="formula">Average = (Desired + Admired) / 2</span>
-      {#each Object.entries(stats).sort((a, b) => b[1][2] - a[1][2]) as [lang, vals], index}
-        <div
-          class={"lang" +
-            (lang === currLang ? " selected" : "") +
-            " tier" +
-            Math.floor(index / 10.0 + 1.0)}
-          on:mouseenter={() => mouseEnter("Average", lang)}
-          on:mouseleave={() => mouseEnter("", "")}
-        >
-          <span>{index + 1}&#41;</span>
-          <span>{lang}</span>
-          <span>{vals[2].toFixed(2)}&#37;</span>
-        </div>
-      {/each}
-    </div>
-    <div class="list">
-      <h2>Best</h2>
-      <span class="desc">Smallest span, highest average</span>
-      <span class="formula">Best = Average - (Span / 2)</span>
-      {#each Object.entries(stats).sort((a, b) => b[1][3] - a[1][3]) as [lang, vals], index}
-        <div
-          class={"lang" +
-            (lang === currLang ? " selected" : "") +
-            " tier" +
-            Math.floor(index / 10.0 + 1.0)}
-          on:mouseenter={() => mouseEnter("Underestimated", lang)}
-          on:mouseleave={() => mouseEnter("", "")}
-        >
-          <span>{index + 1}&#41;</span>
-          <span>{lang}</span>
-          <span>{vals[3].toFixed(2)}</span>
-        </div>
-      {/each}
-    </div>
-    <div class="list">
-      <h2>Underestimated</h2>
-      <span class="desc">Largest span</span>
-      <span class="formula">Span = Admired - Desired</span>
-      {#each Object.entries(stats).sort((a, b) => b[1][4] - a[1][4]) as [lang, vals], index}
-        <div
-          class={"lang" +
-            (lang === currLang ? " selected" : "") +
-            " tier" +
-            Math.floor(index / 10.0 + 1.0)}
-          on:mouseenter={() => mouseEnter("Underestimated", lang)}
-          on:mouseleave={() => mouseEnter("", "")}
-        >
-          <span>{index + 1}&#41;</span>
-          <span>{lang}</span>
-          <span>{vals[4].toFixed(2)}&#37;</span>
-        </div>
-      {/each}
-    </div>
+    {#each display as listToDisplay}
+      <div class="list">
+        <h2>{listToDisplay.title}</h2>
+        <span class="desc">{listToDisplay.desc}</span>
+        <span class="formula">{listToDisplay.formula}</span>
+        {#each Object.entries(stats).sort((a, b) => b[1][listToDisplay.indexInArray] - a[1][listToDisplay.indexInArray]) as [lang, vals], index}
+          <div
+            class={"lang" +
+              (lang === currLang ? " selected" : "") +
+              " tier" +
+              Math.floor(index / 10.0 + 1.0)}
+            on:mouseenter={() => mouseEnter("Desired", lang)}
+            on:mouseleave={() => mouseEnter("", "")}
+          >
+            <span>{index + 1}&#41;</span>
+            <span>{lang}</span>
+            <span>{vals[listToDisplay.indexInArray].toFixed(2)}&#37;</span>
+          </div>
+        {/each}
+      </div>
+    {/each}
   </div>
   <div class="bottom">
     <span>Better stats for StackOverflow survey</span>
@@ -141,7 +99,9 @@
       href="https://github.com/MarioVieilledent/stackoverflow-better-stats"
       target="_blank">GitHub repo</a
     >
-    <a href="https://survey.stackoverflow.co/2023/" target="_blank">2023 StackOverflow Survey</a>
+    <a href="https://survey.stackoverflow.co/2023/" target="_blank"
+      >2023 StackOverflow Survey</a
+    >
     <span>JSON of used data:</span>
     <code>{JSON.stringify(stats)}</code>
   </div>
@@ -180,6 +140,7 @@
 
         h2 {
           margin: 12px 0px 6px 0px;
+          font-size: 20px;
         }
 
         .desc {
