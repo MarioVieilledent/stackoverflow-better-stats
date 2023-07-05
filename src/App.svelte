@@ -20,7 +20,7 @@
 
   // Adds smallest span for high average on index 3
   for (const [lang, vals] of Object.entries(stats)) {
-    vals.push(vals[2] / (vals[1] - vals[0]));
+    vals.push(vals[2] - ((vals[1] - vals[0]) / 2));
   }
 
   // Adds span on index 4
@@ -80,7 +80,7 @@
     <div class="list">
       <h2>Average</h2>
       <span class="desc">Middle point between desired and admired</span>
-      <span class="formula">Desired + Admired / 2</span>
+      <span class="formula">Average = (Desired + Admired) / 2</span>
       {#each Object.entries(stats).sort((a, b) => b[1][2] - a[1][2]) as [lang, vals], index}
         <div
           class={"lang" +
@@ -99,7 +99,7 @@
     <div class="list">
       <h2>Best</h2>
       <span class="desc">Smallest span, highest average</span>
-      <span class="formula">Average / (Admired - Desired)</span>
+      <span class="formula">Best = Average - (Span / 2)</span>
       {#each Object.entries(stats).sort((a, b) => b[1][3] - a[1][3]) as [lang, vals], index}
         <div
           class={"lang" +
@@ -118,7 +118,7 @@
     <div class="list">
       <h2>Underestimated</h2>
       <span class="desc">Largest span</span>
-      <span class="formula">Admired - Desired</span>
+      <span class="formula">Span = Admired - Desired</span>
       {#each Object.entries(stats).sort((a, b) => b[1][4] - a[1][4]) as [lang, vals], index}
         <div
           class={"lang" +
