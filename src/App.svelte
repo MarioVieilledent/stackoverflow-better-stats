@@ -137,6 +137,11 @@
   </div>
   <div class="bottom">
     <span>Better stats for StackOverflow survey</span>
+    <a
+      href="https://github.com/MarioVieilledent/stackoverflow-better-stats"
+      target="_blank">GitHub repo</a
+    >
+    <a href="https://survey.stackoverflow.co/2023/" target="_blank">2023 StackOverflow Survey</a>
     <span>JSON of used data:</span>
     <code>{JSON.stringify(stats)}</code>
   </div>
@@ -148,16 +153,18 @@
     flex-direction: column;
 
     .bottom {
-    display: flex;
-    flex-direction: column;
+      display: flex;
+      flex-direction: column;
       width: 100%;
       padding: 12px;
+      box-sizing: border-box;
 
       code {
         padding: 12px;
         color: #aaa;
-        font-family: 'Courier New', Courier, monospace;
+        font-family: "Courier New", Courier, monospace;
         font-size: 12px;
+        box-sizing: border-box;
       }
     }
 
