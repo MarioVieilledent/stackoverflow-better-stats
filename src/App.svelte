@@ -34,7 +34,7 @@
     },
     {
       title: "Underestimated",
-      desc: "From StackOverflow 2023's survey",
+      desc: "Highest distance between Admired and Desired",
       formula: "Admired - Desired",
       indexInArray: 5,
     },
