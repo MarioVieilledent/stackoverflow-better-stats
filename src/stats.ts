@@ -1,4 +1,4 @@
-export let stats = {
+export let stats: {[key: string]: {[key: string]: number[]}} = {
     'Programming Languages': {
         JavaScript: [40.15, 57.83],
         Python: [39.81, 65.52],
@@ -51,6 +51,31 @@ export let stats = {
         SAS: [0.43, 37.47],
         Raku: [0.33, 65.38],
         Flow: [0.22, 24.77]
+    },
+    'Cloud Platforms': {
+        'Amazon Web Services (AWS)': [44.00, 62.24],
+        'Microsoft Azure': [23.84, 59.93],
+        'Google Cloud': [22.34, 55.13],
+        Cloudflare: [15.27, 66.19],
+        Firebase: [13.37, 54.46],
+        Vercel: [12.52, 69.18],
+        'Digital Ocean': [10.93, 53.04],
+        Netlify: [6.96, 52.73],
+        Heroku: [4.66, 21.97],
+        Linode: [4.47, 49.98],
+        VMware: [4.19, 41.40],
+        Hetzner: [4.18, 70.09],
+        'Fly.io': [3.97, 64.16],
+        'Oracle Cloud Infrastructure (OCI)': [2.42, 55.08],
+        OpenShift: [2.34, 49.37],
+        'Managed Hosting': [2.31, 55.23],
+        OVH: [2.31, 50.34],
+        OpenStack: [1.95, 42.38],
+        Render: [1.76, 50.43],
+        Vultr: [1.63, 50.77],
+        'IBM Cloud Or Watson': [1.29, 32.21],
+        Scaleway: [0.89, 53.03],
+        Colocation: [0.71, 56.54]
     },
     Databases: {
         PostgreSQL: [42.27, 71.32],

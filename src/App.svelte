@@ -45,27 +45,19 @@
   ];
 
   // Calculate stats for one graph
-  function calcStats(graph: any): void {
-    // Adds averages focus on desired on index 2
-    for (const [lang, vals] of Object.entries(graph)) {
-      (vals as any).push((vals[0] * 3 + vals[1]) / 4.0);
-    }
-    // Adds averages  index 3
-    for (const [lang, vals] of Object.entries(graph)) {
-      (vals as any).push((vals[0] + vals[1]) / 2.0);
-    }
-    // Adds averages focus on admired  index 4
-    for (const [lang, vals] of Object.entries(graph)) {
-      (vals as any).push((vals[0] + vals[1] * 3) / 4.0);
-    }
-    // Adds span on index 5
-    for (const [lang, vals] of Object.entries(graph)) {
-      (vals as any).push(vals[1] - vals[0]);
+  function calcStats(graph: { [key: string]: number[] }): void {
+    for (let vals of Object.values(graph)) {
+      vals.push(
+        (vals[0] * 3 + vals[1]) / 4.0, // Average with focus on Desired
+        (vals[0] + vals[1]) / 2.0, // Average
+        (vals[0] + vals[1] * 3) / 4.0, // Average with focus on Admired
+        vals[1] - vals[0]
+      ); // Underestimation)
     }
   }
 
-  // Calculate all stats
-  Object.values(stats).forEach(graph => calcStats(graph));
+  // Calculate stats for all graphs
+  Object.values(stats).forEach((graph) => calcStats(graph));
 
   let currSpot = "";
   let currLang = "";
@@ -79,7 +71,7 @@
 <main>
   <div class="top">
     {#each Object.entries(stats) as [graphName, graphStats]}
-    {@const numberOfItemInTier = Object.keys(graphStats).length / 5.0}
+      {@const numberOfItemInTier = Object.keys(graphStats).length / 5.0}
       <h2>{graphName}</h2>
       <div class="graph">
         {#each display as listToDisplay}
