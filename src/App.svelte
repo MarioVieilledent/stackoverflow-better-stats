@@ -1,5 +1,13 @@
 <script lang="ts">
-  import { stats } from "./stats";
+  let stats: { [key: string]: { [key: string]: number[] } };
+
+  fetch("./stats.json")
+    .then((res) => res.json())
+    .then((data) => {
+      stats = data;
+      // Calculate stats for all graphs
+      Object.values(stats).forEach((graph) => calcStats(graph as any));
+    });
 
   let display = [
     {
@@ -56,9 +64,6 @@
     }
   }
 
-  // Calculate stats for all graphs
-  Object.values(stats).forEach((graph) => calcStats(graph));
-
   let currSpot = "";
   let currLang = "";
 
@@ -70,33 +75,36 @@
 
 <main>
   <div class="top">
-    {#each Object.entries(stats) as [graphName, graphStats]}
-      {@const numberOfItemInTier = Object.keys(graphStats).length / 5.0}
-      <h2>{graphName}</h2>
-      <div class="graph">
-        {#each display as listToDisplay}
-          <div class="list">
-            <h2>{listToDisplay.title}</h2>
-            <span class="desc">{listToDisplay.desc}</span>
-            <span class="formula">{listToDisplay.formula}</span>
-            {#each Object.entries(graphStats).sort((a, b) => b[1][listToDisplay.indexInArray] - a[1][listToDisplay.indexInArray]) as [lang, vals], index}
-              <div
-                class={"lang" +
-                  (lang === currLang ? " selected" : "") +
-                  " tier" +
-                  Math.floor(index / numberOfItemInTier + 1.0)}
-                on:mouseenter={() => mouseEnter("Desired", lang)}
-                on:mouseleave={() => mouseEnter("", "")}
-              >
-                <span>{index + 1}&#41;</span>
-                <span>{lang}</span>
-                <span>{vals[listToDisplay.indexInArray].toFixed(2)}&#37;</span>
-              </div>
-            {/each}
-          </div>
-        {/each}
-      </div>
-    {/each}
+    {#if stats}
+      {#each Object.entries(stats) as [graphName, graphStats]}
+        {@const numberOfItemInTier = Object.keys(graphStats).length / 5.0}
+        <h2>{graphName}</h2>
+        <div class="graph">
+          {#each display as listToDisplay}
+            <div class="list">
+              <h2>{listToDisplay.title}</h2>
+              <span class="desc">{listToDisplay.desc}</span>
+              <span class="formula">{listToDisplay.formula}</span>
+              {#each Object.entries(graphStats).sort((a, b) => b[1][listToDisplay.indexInArray] - a[1][listToDisplay.indexInArray]) as [lang, vals], index}
+                <div
+                  class={"lang" +
+                    (lang === currLang ? " selected" : "") +
+                    " tier" +
+                    Math.floor(index / numberOfItemInTier + 1.0)}
+                  on:mouseenter={() => mouseEnter("Desired", lang)}
+                  on:mouseleave={() => mouseEnter("", "")}
+                >
+                  <span>{index + 1}&#41;</span>
+                  <span>{lang}</span>
+                  <span>{vals[listToDisplay.indexInArray].toFixed(2)}&#37;</span
+                  >
+                </div>
+              {/each}
+            </div>
+          {/each}
+        </div>
+      {/each}
+    {/if}
   </div>
   <div class="bottom">
     <span>Better stats for StackOverflow survey</span>
@@ -108,7 +116,9 @@
       >2023 StackOverflow Survey</a
     >
     <span>JSON of used data:</span>
-    <code>{JSON.stringify(stats)}</code>
+    {#if stats}
+      <code>{JSON.stringify(stats)}</code>
+    {/if}
   </div>
 </main>
 
