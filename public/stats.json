@@ -1092,7 +1092,7 @@
       0.14,
       47.37
     ]
-  }
+  },
   "Asynchronous tools": {
     "Jira": [
       30.57,
@@ -1238,7 +1238,7 @@
       0.08,
       54.39
     ]
-  }
+  },
   "Synchronous tools": {
     "Slack": [
       36.94,
@@ -1332,7 +1332,7 @@
       0.10,
       51.52
     ]
-  }
+  },
   "AI Search Tools": {
     "ChatGPT": [
       75.50,
@@ -1378,7 +1378,7 @@
       0.75,
       54.40
     ]
-  }
+  },
   "AI Developer Tools": {
     "Github Copilot": [
       74.69,
